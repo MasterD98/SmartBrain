@@ -1,5 +1,5 @@
 import './App.css';
-import Navigation from './components/Navigation.js'
+import Navigation from './components/Navigation/Navigation.js'
 function App() {
   return (
     <div className="App">

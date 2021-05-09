@@ -6,6 +6,7 @@ import Navigation from './components/Navigation/Navigation.js';
 import Logo from './components/Logo/Logo.js';
 import ImageLinkForm from './components/ImageLinkForm/ImageLinkForm.js';
 import Rank from './components/Rank/Rank.js';
+import FaceRecognition from './components/FaceRecognition/FaceRecognition.js';
 
 const app=new Clarifai.App({
   apiKey:'f6ad3025415b476296a334ace3fd67de'
@@ -29,16 +30,18 @@ class App extends React.Component{
     super();
     this.state={
       input: '',
+      imageURL: '',
     }
   }
   onInputChange=(event)=>{
-    console.log(event.target.value);
+    this.setState({input: event.target.value})
   }
   onButtonSubmit=()=>{
+    this.setState({imageURL: this.state.input})
     app.models
-    .predict('a403429f2ddf4b49b307e318f00e528b','https://samples.clarifai.com/face-det.jpg' ).then(
+    .predict(Clarifai.FACE_DETECT_MODEL,this.state.input ).then(
     function(response){
-        console.log(response)
+        console.log(response.outputs[0].data.regions[0].region_info.bounding_box)
     },
     function(err){
 
@@ -57,9 +60,7 @@ class App extends React.Component{
           onInputChange={this.onInputChange} 
           onButtonSubmit={this.onButtonSubmit}
         />
-        {
-        /*<FaceRecognition/>
-    */}
+        <FaceRecognition imageURL={this.state.imageURL}/>
       </div>
     );
   }  

@@ -1,7 +1,8 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 # dependencies
-/node_modules
+smart-brain/node_modules
+smart-brain-api/node_modules
 /.pnp
 .pnp.js
 

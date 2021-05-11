@@ -36,14 +36,14 @@ app.get('/',(req,res)=>{
 app.post('/signin',(req,res)=>{
     if(req.body.email===database.users[0].email &&
         req.body.password===database.users[0].password ){
-            res.json('success');
+            res.json(database.users[0]);
     }else{
         res.json('error ');
     }
 })
 
 app.post('/register',(req,res)=>{
-    const {email,name,password}=req.body;
+    const {email,name}=req.body;
     database.users.push({
         id:'125',
         name:name,
@@ -56,7 +56,7 @@ app.post('/register',(req,res)=>{
 })
 
 app.get('/profile/:id',(req,res)=>{
-    const {id}=req.params;
+    const {id}=req.params;//not understand
     let found=false;
     database.users.forEach((user)=>{
         if(user.id===id){
@@ -69,8 +69,9 @@ app.get('/profile/:id',(req,res)=>{
     }
 })
 
-app.post('/image',(req,res)=>{
+app.put('/image',(req,res)=>{
     const {id}=req.body;
+    console.log(id);
     let found=false;
     database.users.forEach((user)=>{
         if(user.id===id){
@@ -86,5 +87,4 @@ app.post('/image',(req,res)=>{
 
 
 app.listen(3000,()=>{
-    console.log("hi");
 })

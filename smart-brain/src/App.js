@@ -79,9 +79,26 @@ class App extends React.Component{
     app.models
     .predict(
       Clarifai.FACE_DETECT_MODEL,
-      this.state.input)
-    .then( response=> this.displayFaceBox(this.calculateFaceLocation(response))
-    .catch(err=> console.log(err)));
+      this.state.input
+    )
+    .then(respones=>{
+      if(respones){
+        fetch('http://localhost:3000/image',{
+          method:'put',
+          headers:{'Content-Type':'application/json'},
+          body:JSON.stringify({
+            id:this.state.user.id,
+          })
+        })
+        .then(respones=>respones.json())
+        .then(count=>{
+          this.setState({user:{entries:count}
+          })
+        })
+      }
+      this.displayFaceBox(this.calculateFaceLocation(respones))
+    })
+    .catch(err=>console.log(err));
   }
   onRouteChange=(route)=>{
     if(route==='signout'){
@@ -101,7 +118,7 @@ class App extends React.Component{
         {route==='home' 
           ?<div>
             <Logo/>
-            <Rank/>
+            <Rank name={this.state.user.name} entries={this.state.user.entries}/>
             <ImageLinkForm 
               onInputChange={this.onInputChange} 
               onButtonSubmit={this.onButtonSubmit}
@@ -110,7 +127,7 @@ class App extends React.Component{
           </div>
           : 
             route === 'signin'
-            ?<SignIn onRouteChange={this.onRouteChange}/>
+            ?<SignIn onRouteChange={this.onRouteChange} loadUser={this.loadUser}/>
             : <Register onRouteChange={this.onRouteChange} loadUser={this.loadUser}/>
         }
       </div>

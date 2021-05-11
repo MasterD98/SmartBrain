@@ -5,29 +5,18 @@ const cors=require('cors');
 const app=express();
 app.use(bodyParser.json());
 app.use(cors())
-const database={
-    users:[
-        {
-            id:'123',
-            name:'John',
-            email:'john@gmail.com',
-            password:'cookies',
-            entries:0,
-            joined:new Date()
-        },
-        {
-            id:'124',
-            name:'Sally',
-            email:'sally@gmail.com',
-            password:'bananas',
-            entries:0,
-            joined:new Date()
-        }
-    ],
-    login:[
-        
-    ]
-}
+const knex=require('knex');
+const { response } = require('express');
+
+const db=knex({
+    client:'pg',
+    connection:{
+        host:'127.0.0.1',
+        user:'postgres',
+        password:'1',
+        database:'smart-brain',
+    }
+})
 
 app.get('/',(req,res)=>{
     res.json(database.users);
@@ -44,15 +33,17 @@ app.post('/signin',(req,res)=>{
 
 app.post('/register',(req,res)=>{
     const {email,name}=req.body;
-    database.users.push({
-        id:'125',
-        name:name,
+    db('users')
+    .returning('*')
+    .insert({
         email:email,
-        entries:0,
-        joined: new Date(),
+        name:name,
+        joined:new Date(),
     })
-    res.json(database.users[database.users.length-1]);
-    
+    .then(response=>{
+        res.json(response);
+    })
+    .catch(err=>res.status(400).json('unable to register'))
 })
 
 app.get('/profile/:id',(req,res)=>{

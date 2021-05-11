@@ -38,10 +38,10 @@ class App extends React.Component{
       isSignIn: false,
       user:{
         id:'',
-        name:'',
         email:'',
+        name:'',
         entries:0,
-        joined:''
+        joined:'',
       }
     }
   }
@@ -92,8 +92,7 @@ class App extends React.Component{
         })
         .then(respones=>respones.json())
         .then(count=>{
-          this.setState({user:{entries:count}
-          })
+          this.setState(Object.assign(this.state.user,{entries:count}))
         })
       }
       this.displayFaceBox(this.calculateFaceLocation(respones))

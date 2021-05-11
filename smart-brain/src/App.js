@@ -27,11 +27,8 @@ const particlesOptions = {
   }
 }
 
-class App extends React.Component{
-  constructor(){
-    super();
-    this.state={
-      input: '',
+const initialState={
+  input: '',
       imageURL: '',
       box:{},
       route: 'signin',
@@ -43,7 +40,11 @@ class App extends React.Component{
         entries:0,
         joined:'',
       }
-    }
+}
+class App extends React.Component{
+  constructor(){
+    super();
+    this.state=initialState;
   }
 
   loadUser=(data)=>{
@@ -101,7 +102,7 @@ class App extends React.Component{
   }
   onRouteChange=(route)=>{
     if(route==='signout'){
-      this.setState({isSignIn:false})
+      this.setState(initialState)
     }else if (route==='home'){
       this.setState({isSignIn:true})
     }

@@ -32,6 +32,8 @@ app.get('/profile/:id',profile.handleProfile(db))
 
 app.put('/image',image.handelImage(db))
 
+app.post('/imageUrl',image.handleAPICall())
+
 
 app.listen(3000,()=>{
 })

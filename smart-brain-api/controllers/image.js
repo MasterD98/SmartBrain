@@ -1,3 +1,19 @@
+const Clarifai=require('clarifai');
+
+const app=new Clarifai.App({
+    apiKey:'f6ad3025415b476296a334ace3fd67de'
+});
+
+const handleAPICall=()=>(req,res)=>{
+    app.models.predict(Clarifai.FACE_DETECT_MODEL,req.body.input)
+    .then(data=>{
+        res.json(data);
+    })
+    .catch(err=>res.status(400).json(err))
+}
+
+
+
 const handelImage=(db)=>(req,res)=>{
     const {id}=req.body;
     db('users').where('id','=',id)
@@ -10,5 +26,6 @@ const handelImage=(db)=>(req,res)=>{
 }
 
 module.exports={
-    handelImage:handelImage
+    handelImage:handelImage,
+    handleAPICall:handleAPICall
 }

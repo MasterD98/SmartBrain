@@ -95,6 +95,7 @@ class App extends React.Component{
         .then(count=>{
           this.setState(Object.assign(this.state.user,{entries:count}))
         })
+        .catch(err=> console.log(err))
       }
       this.displayFaceBox(this.calculateFaceLocation(respones))
     })
@@ -102,7 +103,7 @@ class App extends React.Component{
   }
   onRouteChange=(route)=>{
     if(route==='signout'){
-      this.setState(initialState)
+      this.setState(initialState);
     }else if (route==='home'){
       this.setState({isSignIn:true})
     }
